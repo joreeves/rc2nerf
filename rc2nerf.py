@@ -144,7 +144,7 @@ if __name__ == "__main__":
 
             mat = np.eye(4)
 
-            mat[:3, :3] = matrix_from_euler([row['roll'], row['pitch'], row['heading']], 'yxz', True)
+            mat[:3, :3] = matrix_from_euler([row['roll'], row['pitch'], -row['heading']], 'yxz', True)
 
             mat[:3,3] = np.array([row['x'], row['y'], row['alt']]) * float(args.scale)
 
