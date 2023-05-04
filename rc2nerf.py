@@ -11,7 +11,7 @@ from copy import deepcopy as dc
 from tqdm import tqdm
 from pathlib import Path
 
-from utils import sharpness, Mat2Nerf, central_point
+from utils import sharpness, Mat2Nerf, central_point, plot, _PLT
 from mat_utils import matrix_from_euler
 
 from concurrent.futures import ThreadPoolExecutor
@@ -169,3 +169,6 @@ if __name__ == "__main__":
 
     with open(args.path, "w") as f:
         json.dump(out, f, indent=4)
+
+    if _PLT & args.plot:
+        plot(out, center, args.camera_size)

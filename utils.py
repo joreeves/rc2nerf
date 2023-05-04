@@ -11,10 +11,10 @@ try:
 
 	import matplotlib.pyplot as plt
 	from matplotlib.widgets import Slider, Button
-	_plt = True
+	_PLT = True
 except ImportError as e:
 	print(e)
-	_plt = False
+	_PLT = False
 
 
 ###############################################################################
@@ -102,7 +102,7 @@ def draw_cameras(ax, out, camera_size):
 						virtual_image_distance=camera_size)
 		
 
-def plot(out, origin, region, camera_size=0.1):
+def plot(out, origin, camera_size=0.1):
 
 	# 3D plot the points and display them
 	fig = plt.figure()
@@ -130,12 +130,12 @@ def plot(out, origin, region, camera_size=0.1):
 	# Plot the origin for reference
 	pytr.plot_transform(ax, A2B=np.eye(4), s=1)
 
-	if region is not None:
-		# Plot the bounding box
-		bbox_mat = region['transform_matrix']
-		bbox_mat = bbox_mat @ reflect(1) @ reflect(2)
-		bbox_mat[0:3,3] -= origin # Translate the bbox to match the center
-		plot_box(ax, size=region['size'], A2B=bbox_mat, color='r', alpha=0.5)
+	# if region is not None:
+	# 	# Plot the bounding box
+	# 	bbox_mat = region['transform_matrix']
+	# 	bbox_mat = bbox_mat @ reflect(1) @ reflect(2)
+	# 	bbox_mat[0:3,3] -= origin # Translate the bbox to match the center
+	# 	plot_box(ax, size=region['size'], A2B=bbox_mat, color='r', alpha=0.5)
 
 	# Set the limits
 	ax.set_xlim((center[0] - max_half_extent, center[0] + max_half_extent))
