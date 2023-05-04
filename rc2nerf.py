@@ -146,7 +146,7 @@ if __name__ == "__main__":
 
             mat[:3, :3] = matrix_from_euler([row['pitch'], row['heading'], row['roll']], 'yxz', True)
 
-            mat[:3,3] = [row['x'], row['y'], row['alt']]
+            mat[:3,3] = [row['x'], row['y'], row['alt']] * args.scale
 
             camera['transform_matrix'] = Mat2Nerf(mat)
 
