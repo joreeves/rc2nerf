@@ -145,11 +145,17 @@ if __name__ == "__main__":
 
             mat = np.eye(4)
 
+            # See here for more on RC orientation:
+            # https://forums.unrealengine.com/t/different-rotation-of-cameras-in-xmp-and-csv/710449/5
+            # https://forums.unrealengine.com/t/realitycapture-xmp-camera-math/682564
+            # https://forums.unrealengine.com/t/camera-export-and-file-formats/706644/4
+            # https://forums.unrealengine.com/t/camera-coordinate-system-explanation/712595/2
+            
             mat[:3, :3] = matrix_from_euler([row['roll'], row['pitch'], -row['heading']], 'yxz', True)
 
             mat[:3,3] = np.array([row['x'], row['y'], row['alt']]) * float(args.scale)
 
-            camera['transform_matrix'] = Mat2Nerf(mat)
+            camera['transform_matrix'] = mat#Mat2Nerf(mat)
 
             camera["file_path"] = str(IMGFOLDER / row['#name'])
 
