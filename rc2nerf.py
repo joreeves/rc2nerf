@@ -87,7 +87,8 @@ if __name__ == "__main__":
     IMGTYPE = args.imgtype
     IMGFOLDER = args.imgfolder
 
-    files = list(Path(IMGFOLDER).glob('*.{}'.format(IMGTYPE)))
+    IMGFOLDER = Path(IMGFOLDER)
+    files = list(IMGFOLDER.glob('*.{}'.format(IMGTYPE)))
     stems = list([f.stem for f in files])
 
     # Check if the files path has images in it
@@ -102,9 +103,9 @@ if __name__ == "__main__":
 
     def read_img(row):
         i, row = row
-        img_file_path = os.path.join(IMGFOLDER, row['#name'])
-        if os.path.exists(img_file_path):
-            img = cv2.imread(os.path.join(IMGFOLDER, row['#name']))
+        img_file_path = IMGFOLDER / row['#name']
+        if img_file_path.exists():
+            img = cv2.imread(str(img_file_path))
         else:
             img = None
         return row, img
@@ -149,6 +150,8 @@ if __name__ == "__main__":
             mat[:3,3] = np.array([row['x'], row['y'], row['alt']]) * float(args.scale)
 
             camera['transform_matrix'] = Mat2Nerf(mat)
+
+            camera["file_path"] = str(IMGFOLDER / row['#name'])
 
             camera['sharpness'] = sharpness(img)
 
