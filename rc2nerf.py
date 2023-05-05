@@ -150,6 +150,7 @@ if __name__ == "__main__":
             # https://forums.unrealengine.com/t/realitycapture-xmp-camera-math/682564
             # https://forums.unrealengine.com/t/camera-export-and-file-formats/706644/4
             # https://forums.unrealengine.com/t/camera-coordinate-system-explanation/712595/2
+            # https://forums.unrealengine.com/t/please-help-us-understand-the-internal-external-camera-parameters-export/712503
             
             mat[:3, :3] = matrix_from_euler([row['roll'], row['pitch'], -row['heading']], 'yxz', True)
 
