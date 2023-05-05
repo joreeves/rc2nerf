@@ -12,42 +12,42 @@ Export cameras
 File -> Export -> Export Cameras...
 ```
 
-Save the XML file exported from Agisoft Metashape into the directory that contains your /imagesfolder.
+Save the CSV file exported from Agisoft Metashape into the directory that contains your /imagesfolder.
 
 Open a shell (CMD, Powershell, Bash, etc.) and navigate to the directory with your XML file and /images folder:
 
 cd [PATH TO FOLDER]
 
-run the rc2nerf.py on this XML file using the following command, replacing the text in brackets […] with the file names and paths on your machine:
+run the rc2nerf.py on this CSV file using the following command, replacing the text in brackets […] with the file names and paths on your machine:
 
 ## Commands
 Example:
 ```
-python "[PATH TO iNGP]\rc2nerf.py" --xml_in "[NAME_OF_XML_FILE].xml" --imgfolder .\images
+python "[PATH TO iNGP]\rc2nerf.py" --csv_in "[NAME_OF_XML_FILE].xml" --imgfolder .\images
 ```
 The quotes are only required if you have spaces in any of the folder or file names.
 
 ## Additional command examples
 Disable the agisoft scale and scene orientation
 ```
-python "[PATH TO iNGP]\rc2nerf.py" --xml_in "[NAME_OF_XML_FILE].xml" --imgfolder .\images --no_scale --no_scene_orientation
+python "[PATH TO iNGP]\rc2nerf.py" --csv_in "[NAME_OF_XML_FILE].xml" --imgfolder .\images --no_scale --no_scene_orientation
 ```
 
 Scale the scene down by 0.01
 ```
-python "[PATH TO iNGP]\rc2nerf.py" --xml_in "[NAME_OF_XML_FILE].xml" --imgfolder .\images --scale 0.01
+python "[PATH TO iNGP]\rc2nerf.py" --csv_in "[NAME_OF_XML_FILE].xml" --imgfolder .\images --scale 0.01
 ```
 
 Display the cameras in 3d and set the camera size (for debugging)
 ```
-python "[PATH TO iNGP]\rc2nerf.py" --xml_in "[NAME_OF_XML_FILE].xml" --imgfolder .\images --plot --camera_size 1
+python "[PATH TO iNGP]\rc2nerf.py" --csv_in "[NAME_OF_XML_FILE].xml" --imgfolder .\images --plot --camera_size 1
 ```
 
 Arguments:
 
 | Argument               | Default Value   | Description                                  |
 |------------------------|-----------------|----------------------------------------------|
-| --xml_in               | None            | specify xml file location                    |
+| --csv_in               | None            | specify xml file location                    |
 | --out                  | transforms.json | specify output file path                     |
 | --imgfolder            | ./images/       | location of image folder                     |
 | --imgtype              | jpg             | ex.: jpg, png, ...                           |
