@@ -72,15 +72,6 @@ def build_sensor(resolution, focal_length, intrinsics:dict):
     return out
 
 
-def build_transform_matrix(position, rotation):
-    # mat = np.eye(4)
-    mat = matrix_from_euler(rotation, order='yxz')
-
-    mat[:3,3] = position
-    
-    return mat
-
-
 if __name__ == "__main__":
     args = parse_args()
     CSV_PATH = args.csv_in
@@ -151,7 +142,7 @@ if __name__ == "__main__":
             # https://forums.unrealengine.com/t/camera-export-and-file-formats/706644/4
             # https://forums.unrealengine.com/t/camera-coordinate-system-explanation/712595/2
             # https://forums.unrealengine.com/t/please-help-us-understand-the-internal-external-camera-parameters-export/712503
-            
+
             mat[:3, :3] = matrix_from_euler([row['roll'], row['pitch'], -row['heading']], 'yxz', True)
 
             mat[:3,3] = np.array([row['x'], row['y'], row['alt']]) * float(args.scale)
