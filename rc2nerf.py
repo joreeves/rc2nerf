@@ -54,7 +54,7 @@ from copy import deepcopy as dc
 from tqdm import tqdm
 from pathlib import Path
 
-from utils import sharpness, Mat2Nerf, central_point, plot, _PLT
+from utils import sharpness, Mat2Nerf, central_point, plot, _PLT, reflect
 from mat_utils import matrix_from_euler
 
 from concurrent.futures import ThreadPoolExecutor
@@ -154,6 +154,10 @@ if __name__ == "__main__":
 
     def read_img(row):
         i, row = row
+
+        if args.debug_ignore_images:
+            return row, None
+        
         img_file_path = IMGFOLDER / row['#name']
         if img_file_path.exists():
             img = cv2.imread(str(img_file_path))
@@ -174,6 +178,8 @@ if __name__ == "__main__":
             if (img is None) and (args.debug_ignore_images==False):
                 LOGGER.warning('Image not found: {}'.format(row['#name']))
                 continue
+            
+            LOGGER.debug('Processing image: {}'.format(row['#name']))
         
             # f, px, py, k1, k2, k3, k4, t1, t2
             
@@ -207,11 +213,13 @@ if __name__ == "__main__":
 
             mat[:3,3] = np.array([row['x'], row['y'], row['alt']]) * float(args.scale)
 
-            camera['transform_matrix'] = mat#Mat2Nerf(mat)
+            mat = mat[[2,0,1,3],:] # <<< This is the magic sauce
+
+            camera['transform_matrix'] = mat #Mat2Nerf(mat)
 
             camera["file_path"] = str(IMGFOLDER / row['#name'])
 
-            camera['sharpness'] = sharpness(img)
+            camera['sharpness'] = 1 if args.debug_ignore_images else sharpness(img)
 
             frames.append(camera)
 
