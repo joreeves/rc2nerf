@@ -55,7 +55,15 @@ def central_point(out):
 			if w > 0.01:
 				totp += p*w
 				totw += w
+				
+	if len(out["frames"]) == 0:
+		LOGGER.error("No frames found when computing center of attention")
+		return totp
 
+	if (totw == 0) and (not totp.any()):
+		LOGGER.error("Center of attention is zero")
+		return totp
+	
 	totp /= totw
 	# print("The center of attention is: {}".format(totp)) # the cameras are looking at totp
 	LOGGER.info("The center of attention is: {}".format(totp))

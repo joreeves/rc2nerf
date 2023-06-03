@@ -156,14 +156,14 @@ if __name__ == "__main__":
         i, row = row
 
         if args.debug_ignore_images:
-            return row, None
+            return i, row, None
         
         img_file_path = IMGFOLDER / row['#name']
         if img_file_path.exists():
             img = cv2.imread(str(img_file_path))
         else:
             img = None
-        return row, img
+        return i, row, img
 
     frames = []
 
@@ -172,7 +172,7 @@ if __name__ == "__main__":
     pbar = tqdm(total=len(df), desc='Processing reality capture csv')
 
     with ThreadPoolExecutor(max_workers=args.threads) as executor:
-         for row, img in executor.map(read_img, df.iterrows()):
+         for i, row, img in executor.map(read_img, df.iterrows()):
             pbar.update(1)
 
             if (img is None) and (args.debug_ignore_images==False):
@@ -200,14 +200,14 @@ if __name__ == "__main__":
             
             camera = build_sensor((width, height), focal, row.to_dict())
 
-            mat = np.eye(4)
-
             # See here for more on RC orientation:
             # https://forums.unrealengine.com/t/different-rotation-of-cameras-in-xmp-and-csv/710449/5
             # https://forums.unrealengine.com/t/realitycapture-xmp-camera-math/682564
             # https://forums.unrealengine.com/t/camera-export-and-file-formats/706644/4
             # https://forums.unrealengine.com/t/camera-coordinate-system-explanation/712595/2
             # https://forums.unrealengine.com/t/please-help-us-understand-the-internal-external-camera-parameters-export/712503
+
+            mat = np.eye(4)
 
             mat[:3, :3] = matrix_from_euler([row['roll'], row['pitch'], -row['heading']], 'yxz', True)
 
@@ -221,6 +221,11 @@ if __name__ == "__main__":
 
             camera['sharpness'] = 1 if args.debug_ignore_images else sharpness(img)
 
+            LOGGER.debug(f'Camera {i:03d} info:')
+            for k,v in camera.items():
+                LOGGER.debug('{}: {}'.format(k, v))
+            LOGGER.debug('Finished processing {i:03d}\n')
+            
             frames.append(camera)
 
     out['frames'] = frames
