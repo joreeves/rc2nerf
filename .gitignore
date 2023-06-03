@@ -1,5 +1,9 @@
-__test__/*
-__pycache__/*
+__test__/
+__pycache__/
+
+.conda
+.ipynb_checkpoints
+.vscode
 
 *.pyc
 *.json

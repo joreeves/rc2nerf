@@ -1,3 +1,46 @@
+import logging
+import logging.config
+
+logging.config.dictConfig({
+	'version': 1,
+	'formatters': {
+		'console': {
+			'format': '%(asctime)s | %(levelname)s | %(filename)s : %(lineno)s | >>> %(message)s',
+			'datefmt': '%Y-%m-%d %H:%M:%S'
+		},
+		'file': {
+			'format': '%(asctime)s | %(levelname)s | %(filename)s : %(lineno)s | >>> %(message)s',
+			'datefmt': '%Y-%m-%d %H:%M:%S'
+		}
+	},
+	'handlers': {
+		'console': {
+			'class': 'logging.StreamHandler',
+			'formatter': 'console',
+			'level': 'INFO',
+			'stream': 'ext://sys.stdout'
+		},
+		'file': {
+			'class': 'logging.handlers.RotatingFileHandler',
+			'formatter': 'file',
+			'level': 'DEBUG',
+			'filename': 'agi2nerf.log',
+			'mode': 'a',
+			'maxBytes': 0,
+			'backupCount': 3
+		}
+	},
+	'loggers': {
+		'': {
+			'handlers': ['console', 'file'],
+			'level': 'DEBUG',
+			'propagate': True
+		}
+	}
+})
+
+LOGGER = logging.getLogger(__name__)
+
 import argparse
 import csv
 import json
@@ -72,6 +115,21 @@ def build_sensor(resolution, focal_length, intrinsics:dict):
     return out
 
 
+def init_logging(args):
+	# Get handlers from logging config
+	handlers = logging.getLogger().handlers
+
+	if args.debug:
+		for log in handlers:
+			log.setLevel(logging.DEBUG)
+
+	# Get log path from config
+	log_path = Path(handlers[1].baseFilename)
+
+	if log_path.is_file():
+		handlers[1].doRollover()
+             
+                
 if __name__ == "__main__":
     args = parse_args()
     CSV_PATH = args.csv_in
@@ -84,7 +142,7 @@ if __name__ == "__main__":
 
     # Check if the files path has images in it
     if(len(files)==0) & (args.debug_ignore_images==False):
-        print('No images found in folder: {}'.format(IMGFOLDER))
+        LOGGER.error('No images found in folder: {}'.format(IMGFOLDER))
         exit()
 
     out = dict()
@@ -112,7 +170,7 @@ if __name__ == "__main__":
             pbar.update(1)
 
             if img is None:
-                print( f'{row["#name"]} image found' )
+                LOGGER.warning('Image not found: {}'.format(row['#name']))
                 continue
         
             # f, px, py, k1, k2, k3, k4, t1, t2

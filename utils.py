@@ -1,3 +1,7 @@
+import logging
+
+LOGGER = logging.getLogger(__name__)
+
 import numpy as np
 import cv2
 
