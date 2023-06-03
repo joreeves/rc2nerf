@@ -7,3 +7,8 @@ __pycache__/
 
 *.pyc
 *.json
+*.lock
+*.log*
+*.csv
+*.json
+*.bat

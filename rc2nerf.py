@@ -24,7 +24,7 @@ logging.config.dictConfig({
 			'class': 'logging.handlers.RotatingFileHandler',
 			'formatter': 'file',
 			'level': 'DEBUG',
-			'filename': 'agi2nerf.log',
+			'filename': 'rc2nerf.log',
 			'mode': 'a',
 			'maxBytes': 0,
 			'backupCount': 3
@@ -73,6 +73,7 @@ def parse_args():
     parser.add_argument("--no_scale", action="store_true", help="DISABLES the scaling of the cameras to the bounding region")
     parser.add_argument("--no_center", action="store_true", help="DISABLES the centering of the cameras around the computed central point")
     parser.add_argument("--camera_size", default=0.1, type=float, help="size of the camera in the 3D plot. Does not affect the output.")
+    parser.add_argument("--debug", action="store_true", help="enables debug mode")
 
     parser.add_argument("--debug_ignore_images", action="store_true", help="IGNORES the images in the xml file. For debugging purposes only.")
 
@@ -128,10 +129,13 @@ def init_logging(args):
 
 	if log_path.is_file():
 		handlers[1].doRollover()
-             
-                
+
+
 if __name__ == "__main__":
     args = parse_args()
+
+    init_logging(args)
+
     CSV_PATH = args.csv_in
     IMGTYPE = args.imgtype
     IMGFOLDER = args.imgfolder
@@ -146,9 +150,7 @@ if __name__ == "__main__":
         exit()
 
     out = dict()
-
     out['aabb_scale'] = args.aabb_scale
-
 
     def read_img(row):
         i, row = row
@@ -159,17 +161,17 @@ if __name__ == "__main__":
             img = None
         return row, img
 
-
     frames = []
 
     df = pd.read_csv(CSV_PATH, sep=',')
-    pbar = tqdm(total=len(df))
+
+    pbar = tqdm(total=len(df), desc='Processing reality capture csv')
 
     with ThreadPoolExecutor(max_workers=args.threads) as executor:
          for row, img in executor.map(read_img, df.iterrows()):
             pbar.update(1)
 
-            if img is None:
+            if (img is None) and (args.debug_ignore_images==False):
                 LOGGER.warning('Image not found: {}'.format(row['#name']))
                 continue
         
