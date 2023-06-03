@@ -176,8 +176,8 @@ if __name__ == "__main__":
                 continue
         
             # f, px, py, k1, k2, k3, k4, t1, t2
-
-            width, height, *_ = img.shape
+            
+            height, width, *_ = img.shape
 
             focal = row['f'] * np.maximum(width, height) / 36
 
