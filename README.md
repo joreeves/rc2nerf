@@ -28,16 +28,12 @@ python "[PATH TO iNGP]\rc2nerf.py" --csv_in "[NAME_OF_XML_FILE].xml" --imgfolder
 The quotes are only required if you have spaces in any of the folder or file names.
 
 ## Additional command examples
-Disable the Reality Capture scale and scene orientation
-```
-python "[PATH TO iNGP]\rc2nerf.py" --csv_in "[NAME_OF_XML_FILE].xml" --imgfolder .\images --no_scale --no_scene_orientation
-```
 Scale the scene down by 0.01
 ```
 python "[PATH TO iNGP]\rc2nerf.py" --csv_in "[NAME_OF_XML_FILE].xml" --imgfolder .\images --scale 0.01
 ```
 
-Display the cameras in 3d and set the camera size (for debugging)
+Display the cameras in 3d and set the camera size (for debugging only, requires installing `matplotlib` and `pytransform3d`)
 ```
 python "[PATH TO iNGP]\rc2nerf.py" --csv_in "[NAME_OF_XML_FILE].xml" --imgfolder .\images --plot --camera_size 1
 ```
