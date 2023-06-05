@@ -14,7 +14,7 @@ Alignment -> Export -> Registration -> Internal/External camera parameters...
 
 Save the CSV file exported from Reality Capture into the directory that contains your /images folder.
 
-Open a shell (CMD, Powershell, Bash, etc.) and navigate to the directory with your XML file and /images folder:
+Open a shell (CMD, Powershell, Bash, etc.) and navigate to the directory with your CSV file and /images folder:
 
 cd [PATH TO FOLDER]
 
@@ -23,26 +23,26 @@ Run the rc2nerf.py on this CSV file using the following command, replacing the t
 ## Commands
 Example:
 ```
-python "[PATH TO iNGP]\rc2nerf.py" --csv_in "[NAME_OF_XML_FILE].xml" --imgfolder .\images
+python "[PATH TO iNGP]\rc2nerf.py" --csv_in "[NAME_OF_CSV_FILE].csv" --imgfolder .\images
 ```
 The quotes are only required if you have spaces in any of the folder or file names.
 
 ## Additional command examples
 Scale the scene down by 0.01
 ```
-python "[PATH TO iNGP]\rc2nerf.py" --csv_in "[NAME_OF_XML_FILE].xml" --imgfolder .\images --scale 0.01
+python "[PATH TO iNGP]\rc2nerf.py" --csv_in "[NAME_OF_CSV_FILE].csv" --imgfolder .\images --scale 0.01
 ```
 
 Display the cameras in 3d and set the camera size (for debugging only, requires installing `matplotlib` and `pytransform3d`)
 ```
-python "[PATH TO iNGP]\rc2nerf.py" --csv_in "[NAME_OF_XML_FILE].xml" --imgfolder .\images --plot --camera_size 1
+python "[PATH TO iNGP]\rc2nerf.py" --csv_in "[NAME_OF_CSV_FILE].csv" --imgfolder .\images --plot --camera_size 1
 ```
 
 Arguments:
 
 | Argument               | Default Value   | Description                                  |
 |------------------------|-----------------|----------------------------------------------|
-| --csv_in               | None            | specify xml file location                    |
+| --csv_in               | None            | specify csv file location                    |
 | --out                  | transforms.json | specify output file path                     |
 | --imgfolder            | .\images        | location of image folder                     |
 | --imgtype              | jpg             | ex.: jpg, png, ...                           |
