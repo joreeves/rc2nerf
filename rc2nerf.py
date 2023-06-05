@@ -180,7 +180,8 @@ if __name__ == "__main__":
                 continue
             
             LOGGER.debug('Processing image: {}'.format(row['#name']))
-        
+            LOGGER.debug('Processing row: {}'.format(row))
+
             # f, px, py, k1, k2, k3, k4, t1, t2
             
             height, width, *_ = img.shape
@@ -198,7 +199,7 @@ if __name__ == "__main__":
                 p2=row['t2'],
                 )
             
-            camera = build_sensor((width, height), focal, row.to_dict())
+            camera = build_sensor((width, height), focal, intrinsics)
 
             # See here for more on RC orientation:
             # https://forums.unrealengine.com/t/different-rotation-of-cameras-in-xmp-and-csv/710449/5
